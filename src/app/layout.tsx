@@ -28,8 +28,21 @@ export const metadata: Metadata = {
   openGraph: {
     title: "beFitness PRO",
     description: "Controle completo de peso e bem-estar na palma da sua mão.",
-    images: [{ url: "/logo.png" }],
+    images: [{
+      url: "https://befitness-pro-v2.vercel.app/logo.png",
+      width: 512,
+      height: 512,
+      alt: "beFitness PRO Logo"
+    }],
     type: "website",
+    siteName: "beFitness PRO",
+    url: "https://befitness-pro-v2.vercel.app",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "beFitness PRO",
+    description: "Controle completo de peso e bem-estar na palma da sua mão.",
+    images: ["https://befitness-pro-v2.vercel.app/logo.png"],
   },
   appleWebApp: {
     capable: true,
