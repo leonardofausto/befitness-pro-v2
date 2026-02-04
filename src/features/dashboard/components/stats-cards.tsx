@@ -104,6 +104,7 @@ export function StatsCards({
                 bmi={bmi}
                 height={height}
                 weight={weight}
+                isVisible={isVisible}
             />
 
             <CalorieStatsDialog
@@ -113,6 +114,7 @@ export function StatsCards({
                 objective={objective}
                 weight={weight}
                 targetWeight={targetWeight}
+                isVisible={isVisible}
             />
         </>
     );

@@ -1,5 +1,9 @@
 # Registro de Alterações (Changelog)
 
+## [0.5.1] - 2026-02-04
+### Adicionado
+- **Exportação de Dados**: Adicionada funcionalidade de exportação do histórico de pesagem para formato CSV (;).
+
 ## [0.5.0] - 2026-02-04
 ### Adicionado
 - **Sistema Real de Push Notifications**: Implementação nativa via Web Push API e VAPID.

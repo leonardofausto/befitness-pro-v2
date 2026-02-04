@@ -4,9 +4,10 @@ import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format, getYear, getMonth } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { ArrowDown, ArrowUp, Minus, History, Search } from "lucide-react";
+import { ArrowDown, ArrowUp, Minus, History, Search, Download, FileSpreadsheet } from "lucide-react";
 import { cn, parseLocalDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { playSound } from "@/lib/sounds";
 import {
     Dialog,
     DialogContent,
@@ -42,6 +43,31 @@ export function WeightHistory({ weights, isVisible = true, className }: WeightHi
 
     const selectTriggerStyles = "h-10 w-full rounded-xl border-primary/20 bg-background focus:ring-2 focus:ring-primary text-foreground font-medium shadow-sm transition-all";
     const selectContentStyles = "w-[var(--radix-select-trigger-width)] rounded-xl border border-primary/20 bg-background shadow-2xl p-1 z-[110] max-h-[160px]";
+
+    const handleExportCSV = () => {
+        playSound('CLICK');
+        const headers = ["Data", "Peso (kg)", "Diferenca", "Status"];
+        const rows = weights.map(w => [
+            format(parseLocalDate(w.date), "dd/MM/yyyy"),
+            w.weight.toString().replace('.', ','),
+            w.difference.toString().replace('.', ','),
+            getStatusText(w.status)
+        ]);
+
+        const csvContent = [headers, ...rows]
+            .map(e => e.join(";"))
+            .join("\n");
+
+        const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", `historico-peso-befitness-${new Date().getTime()}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     const formatValue = (value: number, unit: string) => {
         if (!isVisible) return "••••";
@@ -210,6 +236,16 @@ export function WeightHistory({ weights, isVisible = true, className }: WeightHi
                                 <DialogDescription className="text-sm font-medium">Veja toda sua jornada de evolução.</DialogDescription>
                             </div>
                         </div>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleExportCSV}
+                            className="absolute right-12 top-10 sm:right-16 sm:top-12 h-10 px-4 rounded-xl border-green-500/20 hover:bg-green-500/10 text-green-600 font-bold flex items-center gap-2 group transition-all"
+                        >
+                            <FileSpreadsheet className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                            <span className="hidden sm:inline">Exportar CSV</span>
+                            <span className="sm:hidden">CSV</span>
+                        </Button>
                     </DialogHeader>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">

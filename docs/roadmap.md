@@ -12,7 +12,7 @@ Estratégia de evolução do produto organizada por prioridades e impacto.
 |  (x)  | Controle de Hidratação Inteligente |   Core   |    Média    |     6h     |  100%   | Concluído |
 |  (x)  | Dashboard de Gráficos e Tendências | Avançado |    Alta     |     8h     |  100%   | Concluído |
 |  ( )  | Módulo de Nutrição (Macros/Cal)    | Expansão |    Alta     |    15h     |   0%    | Futuro    |
-|  ( )  | Sistema de Relatórios Avançados    | Expansão |    Média    |     6h     |   0%    | Futuro    |
+|  (x)  | Exportação de Histórico (CSV)      | Expansão |    Média    |     3h     |  100%   | Concluído |
 |  ( )  | Configuração de PWA e Mobile Nativo|  Deploy  |    Média    |     4h     |  60%    | Em Progresso |
 
 ### Detalhamento da Estrutura (Legenda)

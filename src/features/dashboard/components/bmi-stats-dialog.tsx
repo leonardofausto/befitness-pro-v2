@@ -17,9 +17,10 @@ interface BmiStatsDialogProps {
     bmi: number;
     height: number;
     weight: number;
+    isVisible?: boolean;
 }
 
-export function BmiStatsDialog({ open, onOpenChange, bmi, height, weight }: BmiStatsDialogProps) {
+export function BmiStatsDialog({ open, onOpenChange, bmi, height, weight, isVisible = true }: BmiStatsDialogProps) {
     const getBmiCategory = (bmi: number) => {
         if (bmi < 18.5) return { label: "Abaixo do peso", color: "text-blue-500", bg: "bg-blue-500/10", border: "border-blue-500/20", description: "Você está abaixo do peso ideal para sua altura.", icon: AlertTriangle };
         if (bmi < 25) return { label: "Peso Normal", color: "text-green-500", bg: "bg-green-500/10", border: "border-green-500/20", description: "Parabéns! Você está na faixa de peso saudável.", icon: CheckCircle2 };
@@ -106,7 +107,9 @@ export function BmiStatsDialog({ open, onOpenChange, bmi, height, weight }: BmiS
                         </div>
 
                         <div className="mt-6 flex flex-col items-center gap-2">
-                            <span className="text-5xl font-black text-foreground tracking-tighter drop-shadow-sm">{bmi.toFixed(2)}</span>
+                            <span className="text-5xl font-black text-foreground tracking-tighter drop-shadow-sm">
+                                {isVisible ? bmi.toFixed(2) : "••.••"}
+                            </span>
 
                             {/* Enhanced Alerta Badge below value */}
                             <div className={cn(
@@ -137,7 +140,9 @@ export function BmiStatsDialog({ open, onOpenChange, bmi, height, weight }: BmiS
                             <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">Como calculamos</p>
                             <div className="flex items-center justify-between">
                                 <code className="text-xs font-bold text-primary">IMC = Peso / (Altura)²</code>
-                                <span className="text-[10px] text-muted-foreground">{weight}kg / ({height / 100}m)²</span>
+                                <span className="text-[10px] text-muted-foreground">
+                                    {isVisible ? `${weight}kg` : "•••kg"} / ({height / 100}m)²
+                                </span>
                             </div>
                         </div>
                     </div>

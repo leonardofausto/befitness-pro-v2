@@ -20,6 +20,7 @@ BeFitness PRO é um ecossistema de alta performance para monitoramento de saúde
 - 🔔 **Notificações Push Reais:** Lembretes inteligentes via Web Push API.
 - 🌑 **Otimização OLED:** Modo "Pure Black" para economia extrema de bateria.
 - ⚡ **Performance Otimista:** Interface ultra-rápida com atualizações instantâneas (Zero Lag).
+- 📂 **Exportação de Dados:** Exportação completa do histórico de pesagem para CSV.
 - 🎨 **Design Adaptativo:** Experiência otimizada para Desktop, Tablet e Mobile com Skeletons de carregamento.
 
 ## 🛠️ Stack Tecnológica

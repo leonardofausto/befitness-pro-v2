@@ -17,6 +17,7 @@ interface CalorieStatsDialogProps {
     objective: "lose" | "gain" | "maintain";
     weight: number;
     targetWeight: number;
+    isVisible?: boolean;
 }
 
 export function CalorieStatsDialog({
@@ -25,7 +26,8 @@ export function CalorieStatsDialog({
     calories,
     objective,
     weight,
-    targetWeight
+    targetWeight,
+    isVisible = true
 }: CalorieStatsDialogProps) {
 
     const getObjectiveDetails = () => {
@@ -38,7 +40,7 @@ export function CalorieStatsDialog({
                     bg: "bg-red-500/10",
                     border: "border-red-500/20",
                     description: "Para perder peso de forma saudável, você deve consumir em média 300 a 500 kcal a menos do que o valor mostrado.",
-                    strategy: "Consuma cerca de " + Math.round(calories - 500) + " a " + Math.round(calories - 300) + " kcal/dia.",
+                    strategy: isVisible ? "Consuma cerca de " + Math.round(calories - 500) + " a " + Math.round(calories - 300) + " kcal/dia." : "Consuma cerca de •••• a •••• kcal/dia.",
                     advice: "Foque em proteínas e vegetais para manter a saciedade mesmo com o déficit calórico."
                 };
             case "gain":
@@ -49,7 +51,7 @@ export function CalorieStatsDialog({
                     bg: "bg-green-500/10",
                     border: "border-green-500/20",
                     description: "Para ganhar massa magra, você deve consumir em média 300 a 500 kcal a mais do que sua manutenção.",
-                    strategy: "Consuma cerca de " + Math.round(calories + 300) + " a " + Math.round(calories + 500) + " kcal/dia.",
+                    strategy: isVisible ? "Consuma cerca de " + Math.round(calories + 300) + " a " + Math.round(calories + 500) + " kcal/dia." : "Consuma cerca de •••• a •••• kcal/dia.",
                     advice: "Priorize treinos de força e garanta uma boa ingestão de carboidratos complexos."
                 };
             default:
@@ -60,7 +62,7 @@ export function CalorieStatsDialog({
                     bg: "bg-blue-500/10",
                     border: "border-blue-500/20",
                     description: "Seu valor de manutenção é o equilíbrio perfeito entre o que você consome e o que você gasta.",
-                    strategy: "Consuma cerca de " + Math.round(calories) + " kcal/dia.",
+                    strategy: isVisible ? "Consuma cerca de " + Math.round(calories) + " kcal/dia." : "Consuma cerca de •••• kcal/dia.",
                     advice: "Mantenha a constância na sua rotina atual de exercícios e alimentação."
                 };
         }
@@ -93,7 +95,7 @@ export function CalorieStatsDialog({
                     <div className="bg-gradient-to-br from-[#FF6B00]/20 via-[#FF6B00]/5 to-transparent rounded-[2.5rem] p-8 border border-[#FF6B00]/10 relative overflow-hidden group">
                         <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-[#FF6B00]/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700" />
                         <div className="relative z-10 text-center">
-                            <span className="text-6xl font-black text-foreground">{calories}</span>
+                            <span className="text-6xl font-black text-foreground">{isVisible ? calories : "••••"}</span>
                             <span className="text-xl font-bold text-[#FF6B00] ml-2">kcal</span>
                             <p className="text-sm font-bold uppercase tracking-widest opacity-60 mt-2">Sua Manutenção Diária</p>
                         </div>
@@ -135,12 +137,12 @@ export function CalorieStatsDialog({
                     <div className="flex items-center justify-between px-2">
                         <div className="flex flex-col">
                             <span className="text-[10px] font-black uppercase text-muted-foreground">Peso Atual</span>
-                            <span className="text-lg font-bold">{weight} kg</span>
+                            <span className="text-lg font-bold">{isVisible ? `${weight} kg` : "••• kg"}</span>
                         </div>
                         <div className="h-px flex-1 bg-primary/10 mx-4" />
                         <div className="flex flex-col items-end">
                             <span className="text-[10px] font-black uppercase text-muted-foreground">Meta</span>
-                            <span className="text-lg font-bold text-primary">{targetWeight} kg</span>
+                            <span className="text-lg font-bold text-primary">{isVisible ? `${targetWeight} kg` : "••• kg"}</span>
                         </div>
                     </div>
 
