@@ -1,0 +1,24 @@
+{
+    "name": "beFitness Pro",
+    "short_name": "beFitness",
+    "description": "Controle completo de peso e bem-estar na palma da sua mão.",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#FFFFFF",
+    "theme_color": "#007AFF",
+    "icons": [
+        {
+            "src": "/logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

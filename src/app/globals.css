@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+
+
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-lg: 1.25rem;
+  --radius-md: 1rem;
+  --radius-sm: 0.75rem;
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Weight Status Colors */
+  --color-weight-gain: #ef4444;
+  --color-weight-loss: #22c55e;
+  --color-weight-maintain: #3b82f6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: #fdfbff;
+  --foreground: #1c1b1f;
+  --card: #fdfbff;
+  --card-foreground: #1c1b1f;
+  --popover: #fdfbff;
+  --popover-foreground: #1c1b1f;
+  --primary: #6750a4;
+  --primary-foreground: #ffffff;
+  --secondary: #625b71;
+  --secondary-foreground: #ffffff;
+  --muted: #f4f2f7;
+  --muted-foreground: #49454f;
+  --accent: #eaddff;
+  --accent-foreground: #21005d;
+  --destructive: #b3261e;
+  --destructive-foreground: #ffffff;
+  --border: #cac4d0;
+  --input: #cac4d0;
+  --ring: #6750a4;
+  --chart-1: #6750a4;
+  --chart-2: #625b71;
+  --chart-3: #7d5260;
+  --chart-4: #6750a5;
+  --chart-5: #625b72;
+  --radius: 1.25rem;
+}
+
+.dark {
+  --background: #1c1b1f;
+  --foreground: #e6e1e5;
+  --card: #1c1b1f;
+  --card-foreground: #e6e1e5;
+  --popover: #1c1b1f;
+  --popover-foreground: #e6e1e5;
+  --primary: #d0bcff;
+  --primary-foreground: #381e72;
+  --secondary: #ccc2dc;
+  --secondary-foreground: #332d41;
+  --muted: #49454f;
+  --muted-foreground: #cac4d0;
+  --accent: #4f378b;
+  --accent-foreground: #eaddff;
+  --destructive: #f2b8b5;
+  --destructive-foreground: #601410;
+  --border: #49454f;
+  --input: #49454f;
+  --ring: #d0bcff;
+  --chart-1: #d0bcff;
+  --chart-2: #ccc2dc;
+  --chart-3: #efb8c8;
+  --chart-4: #d0bcff;
+  --chart-5: #ccc2dd;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.status-gain {
+  background-color: var(--color-weight-gain);
+  color: white;
+}
+
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.status-loss {
+  background-color: var(--color-weight-loss);
+  color: white;
+}
+
+.status-maintain {
+  background-color: var(--color-weight-maintain);
+  color: white;
 }

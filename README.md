@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# #️⃣ BeFitness PRO - Evolução Fitness Inteligente
 
-## Getting Started
+BeFitness PRO é um ecossistema de alta performance para monitoramento de saúde e evolução física, inspirado nos princípios de design **Material Design 3 (M3)**. Focado em simplicidade, precisão e uma experiência de usuário premium, o aplicativo permite que você acompanhe seu peso, IMC e necessidades calóricas com inteligência.
 
-First, run the development server:
+![Dashboard Preview](https://img.shields.io/badge/Status-Development-orange?style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)
+![Convex](https://img.shields.io/badge/Backend-Convex-000000?style=for-the-badge&logo=convex)
+![Clerk](https://img.shields.io/badge/Auth-Clerk-6C47FF?style=for-the-badge&logo=clerk)
 
+## ✨ Funcionalidades Principais
+
+- 🚀 **Onboarding Inteligente:** Configuração rápida de perfil com cálculo automático de metas.
+- 📊 **Dashboard M3 Premium:** Visualização clara de Peso Atual, IMC e Gasto Calórico.
+- 🌡️ **Velocímetro de IMC 3D:** Visualização imersiva da sua saúde corporal com efeitos de profundidade.
+- 🏗️ **Gasto Calórico Personalizado:** Estimativas baseadas na fórmula de Mifflin-St Jeor revisada.
+- 📅 **Calendário Evolutivo:** Acompanhamento cronológico com sinalização visual de progresso.
+- 🔐 **Privacidade Total:** Modo de visibilidade oculta para valores sensíveis no dashboard.
+- 🎨 **Design Adaptativo:** Experiência otimizada para Desktop, Tablet e Mobile.
+
+## 🛠️ Stack Tecnológica
+
+- **Frontend:** Next.js 15 (App Router), React 19.
+- **Estilização:** Tailwind CSS v4, Framer Motion, Lucid UI.
+- **Backend:** Convex (Real-time DB & Cloud Functions).
+- **Autenticação:** Clerk (Social & Email Login).
+- **Componentes:** Shadcn/UI, Magic UI.
+
+## 🚀 Começando
+
+### Pré-requisitos
+- Node.js 18+
+- Conta no [Convex](https://www.convex.dev/)
+- Conta no [Clerk](https://clerk.com/)
+
+### Instalação
+
+1. Clone o repositório:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/seu-usuario/befitness-pro.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instale as dependências:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Configure as variáveis de ambiente:
+Crie um arquivo `.env.local` na raiz com suas chaves do Clerk e Convex.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Inicie o servidor de desenvolvimento:
+```bash
+npm run dev
+```
 
-## Learn More
+## 📂 Documentação Interna
 
-To learn more about Next.js, take a look at the following resources:
+Para detalhes sobre o desenvolvimento e planejamento, consulte a pasta `/docs`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Progress](docs/progress.md) - Status atual das funcionalidades.
+- [Changelog](docs/changelog.md) - Histórico de versões e alterações.
+- [Roadmap](docs/roadmap.md) - Próximos passos e visão de futuro.
+- [Improvements](docs/improvements.md) - Melhorias pendentes e ideias.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+Desenvolvido com ❤️ pela equipe BeFitness.
