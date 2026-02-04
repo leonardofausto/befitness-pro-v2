@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format, getYear, getMonth } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ArrowDown, ArrowUp, Minus, History, Search } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, parseLocalDate } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -43,11 +44,13 @@ export function WeightHistory({ weights, isVisible = true, className }: WeightHi
     const selectContentStyles = "w-[var(--radix-select-trigger-width)] rounded-xl border border-primary/20 bg-background shadow-2xl p-1 z-[110] max-h-[160px]";
 
     const formatValue = (value: number, unit: string) => {
-        return isVisible ? `${value} ${unit}` : "••••";
+        if (!isVisible) return "••••";
+        const rounded = Math.round(value * 10) / 10;
+        return `${rounded} ${unit}`;
     };
 
     const years = useMemo(() => {
-        const uniqueYears = Array.from(new Set(weights.map(w => getYear(new Date(w.date)).toString())));
+        const uniqueYears = Array.from(new Set(weights.map(w => parseLocalDate(w.date).getFullYear().toString())));
         return uniqueYears.sort((a, b) => b.localeCompare(a));
     }, [weights]);
 
@@ -76,11 +79,11 @@ export function WeightHistory({ weights, isVisible = true, className }: WeightHi
 
     const filteredWeights = useMemo(() => {
         return weights.filter(w => {
-            const date = new Date(w.date);
+            const date = parseLocalDate(w.date);
             const dayOfMonth = date.getDate();
 
-            const yearMatch = selectedYear === "all" || getYear(date).toString() === selectedYear;
-            const monthMatch = selectedMonth === "all" || getMonth(date).toString() === selectedMonth;
+            const yearMatch = selectedYear === "all" || date.getFullYear().toString() === selectedYear;
+            const monthMatch = selectedMonth === "all" || date.getMonth().toString() === selectedMonth;
 
             let weekMatch = true;
             if (selectedWeek !== "all") {
@@ -136,7 +139,7 @@ export function WeightHistory({ weights, isVisible = true, className }: WeightHi
             <div className="flex flex-col">
                 <span className="font-bold text-lg">{formatValue(entry.weight, "kg")}</span>
                 <span className="text-xs text-muted-foreground">
-                    {format(new Date(entry.date), "dd 'de' MMMM", { locale: ptBR })}
+                    {format(parseLocalDate(entry.date), "dd 'de' MMMM", { locale: ptBR })}
                 </span>
             </div>
 
@@ -177,15 +180,17 @@ export function WeightHistory({ weights, isVisible = true, className }: WeightHi
                         )}
                     </div>
 
-                    {weights.length > 3 && (
-                        <button
+                    <div className="pt-4 mt-auto">
+                        <Button
+                            variant="outline"
+                            size="sm"
                             onClick={() => setIsModalOpen(true)}
-                            className="mt-4 w-full py-3 rounded-xl border border-primary/20 hover:bg-primary/5 transition-colors text-primary font-bold text-sm flex items-center justify-center gap-2"
+                            className="w-full h-12 rounded-xl border-primary/20 hover:bg-primary/5 transition-all text-primary font-bold text-sm flex items-center justify-center gap-2"
                         >
                             <History className="w-4 h-4" />
                             Ver Histórico Completo
-                        </button>
-                    )}
+                        </Button>
+                    </div>
                 </CardContent>
             </Card>
 

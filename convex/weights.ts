@@ -23,20 +23,20 @@ export const addWeight = mutation({
             .order("desc")
             .first();
 
-        const bmi = calculateBMI(args.weight, profile.height);
-        const calories = calculateTDEE(
+        const bmi = Math.round(calculateBMI(args.weight, profile.height) * 10) / 10;
+        const calories = Math.round(calculateTDEE(
             args.weight,
             profile.height,
             profile.age,
             profile.gender,
             profile.activityLevel
-        );
+        ));
 
         let difference = 0;
         let status = "maintained";
 
         if (previousWeight) {
-            difference = args.weight - previousWeight.weight;
+            difference = Math.round((args.weight - previousWeight.weight) * 10) / 10;
             if (difference > 0) status = "gained";
             else if (difference < 0) status = "lost";
         }

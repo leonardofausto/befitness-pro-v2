@@ -20,6 +20,7 @@ const profileSchema = z.object({
     age: z.coerce.number().min(1, "Idade é obrigatória"),
     gender: z.string().min(1, "Selecione o gênero"),
     height: z.coerce.number().min(50, "Altura é obrigatória"),
+    initialWeightDate: z.string().min(1, "Data de início é obrigatória"),
     activityLevel: z.string().min(1, "Selecione o nível de atividade"),
     goal: z.string().min(1, "Selecione seu objetivo"),
     targetWeight: z.coerce.number().min(20, "Peso alvo é obrigatório"),
@@ -45,6 +46,7 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
             age: initialData?.age || 0,
             gender: initialData?.gender || "",
             height: initialData?.height || 0,
+            initialWeightDate: initialData?.initialWeightDate || "",
             activityLevel: initialData?.activityLevel || "",
             goal: initialData?.goal || "",
             targetWeight: initialData?.targetWeight || 0,
@@ -67,6 +69,7 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                 age: values.age,
                 gender: values.gender,
                 height: values.height,
+                initialWeightDate: values.initialWeightDate,
                 activityLevel: values.activityLevel,
                 goal: values.goal,
                 targetWeight: values.targetWeight,
@@ -242,16 +245,40 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                             </FormItem>
                             <FormField
                                 control={form.control as any}
+                                name="initialWeightDate"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-foreground/90 font-bold">Início da Jornada</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="date"
+                                                {...field}
+                                                className={inputStyles}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control as any}
                                 name="targetWeight"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-foreground/90 font-bold">Peso Alvo (kg)</FormLabel>
                                         <FormControl>
                                             <Input
-                                                type="number"
-                                                step="0.1"
+                                                type="text"
+                                                inputMode="decimal"
+                                                placeholder="ex: 65,0"
                                                 {...field}
-                                                onChange={(e) => handleNumberChange(e, field.onChange)}
+                                                value={field.value ?? ""}
+                                                onChange={e => {
+                                                    const val = e.target.value.replace(',', '.');
+                                                    if (val === "" || !isNaN(Number(val)) || val.endsWith('.')) {
+                                                        field.onChange(val);
+                                                    }
+                                                }}
                                                 className={inputStyles}
                                             />
                                         </FormControl>

@@ -4,7 +4,7 @@ import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianG
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { cn } from "@/lib/utils";
+import { cn, parseLocalDate } from "@/lib/utils";
 
 interface WeightChartProps {
     data: {
@@ -18,7 +18,7 @@ interface WeightChartProps {
 export function WeightChart({ data, isVisible = true, className }: WeightChartProps) {
     const chartData = [...data].reverse().map((item) => ({
         ...item,
-        date: format(new Date(item.date), "dd/MM", { locale: ptBR }),
+        date: format(parseLocalDate(item.date), "dd/MM", { locale: ptBR }),
     }));
 
     return (

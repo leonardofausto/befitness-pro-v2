@@ -6,7 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
-import { Star } from "lucide-react";
+import { Star, Rocket } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
 
 interface WeightEntry {
     date: string;
@@ -16,10 +18,11 @@ interface WeightEntry {
 interface WeightCalendarProps {
     entries: WeightEntry[];
     hydrationEntries?: { date: string; total: number; goal: number }[];
+    initialWeightDate?: string;
     className?: string;
 }
 
-export function WeightCalendar({ entries, hydrationEntries, className }: WeightCalendarProps) {
+export function WeightCalendar({ entries, hydrationEntries, initialWeightDate, className }: WeightCalendarProps) {
     const [date, setDate] = React.useState<Date | undefined>(undefined);
     const [mounted, setMounted] = React.useState(false);
 
@@ -76,19 +79,34 @@ export function WeightCalendar({ entries, hydrationEntries, className }: WeightC
                                 const dailyTotal = hydrationEntries
                                     ?.filter((h: { date: string; total: number }) => h.date === dateStr)
                                     .reduce((acc: number, curr: { total: number }) => acc + curr.total, 0) || 0;
-                                const goal = hydrationEntries?.find((h: { date: string; goal: number }) => h.date === dateStr)?.goal || (entries[0] ? Math.round(180 * 35) : 2000); // Fallback
+                                const goal = hydrationEntries?.find((h: { date: string; goal: number }) => h.date === dateStr)?.goal || 2000; // Fallback to 2000ml
                                 const isHydrated = dailyTotal >= goal && dailyTotal > 0;
+                                const isStartDay = dateStr === initialWeightDate;
 
                                 return (
                                     <button
                                         {...props}
-                                        className={`relative flex h-9 w-9 items-center justify-center p-0 font-medium rounded-full transition-all duration-300 ${statusColor ? `${statusColor} text-white shadow-lg` : "hover:bg-accent hover:text-accent-foreground"}`}
+                                        className={`relative flex h-9 w-9 items-center justify-center p-0 font-medium rounded-full transition-all duration-300 ${statusColor ? `${statusColor} text-white shadow-lg` : "hover:bg-accent hover:text-accent-foreground"} ${isStartDay ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}`}
                                     >
                                         <time dateTime={dateStr}>
                                             {format(day.date, "d")}
                                         </time>
                                         {isHydrated && (
                                             <Star className="absolute -top-1 -right-1 w-3 h-3 text-yellow-500 fill-yellow-500 drop-shadow-[0_0_2px_rgba(234,179,8,0.5)]" />
+                                        )}
+                                        {isStartDay && (
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <div className="absolute -top-3 -left-3 p-1.5 bg-primary/20 rounded-full backdrop-blur-md border border-primary/30 z-10 animate-pulse cursor-help">
+                                                            <Rocket className="w-3 h-3 text-primary fill-primary -rotate-45" />
+                                                        </div>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="top" className="bg-primary text-primary-foreground font-bold border-none shadow-lg">
+                                                        <p>Início da Jornada 🚀</p>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
                                         )}
                                     </button>
                                 );

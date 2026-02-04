@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Droplets, Plus, Trash2, History, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,11 @@ import { playSound } from "@/lib/sounds";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { cn } from "@/lib/utils";
+import { cn, getLocalDate } from "@/lib/utils";
 import { HydrationHistoryDialog } from "./hydration-history-dialog";
+import { LottieAnimation } from "@/components/lottie-animation";
+import waterAnim from "../../../../public/animations/water.json";
+
 
 interface HydrationCardProps {
     weight: number;
@@ -18,10 +21,44 @@ interface HydrationCardProps {
 }
 
 export function HydrationCard({ weight, userId }: HydrationCardProps) {
-    const today = new Date().toISOString().split('T')[0];
+    const [today, setToday] = useState(getLocalDate());
+
+    // Refresh the date at midnight to auto-reset the counter
+    useEffect(() => {
+        const now = new Date();
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(0, 0, 0, 0);
+
+        const timeToMidnight = tomorrow.getTime() - now.getTime();
+
+        const timer = setTimeout(() => {
+            setToday(getLocalDate());
+        }, timeToMidnight + 100); // Small buffer
+
+        return () => clearTimeout(timer);
+    }, [today]);
+
     const hydrationData = useQuery(api.hydration.getHydrationByDate, { userId, date: today });
-    const addWater = useMutation(api.hydration.addWater);
+    const addWater = useMutation(api.hydration.addWater).withOptimisticUpdate((localStore, args) => {
+        const { userId, amount, date } = args;
+        const currentData = localStore.getQuery(api.hydration.getHydrationByDate, { userId, date });
+        if (currentData !== undefined) {
+            localStore.setQuery(api.hydration.getHydrationByDate, { userId, date }, [
+                ...currentData,
+                {
+                    _id: `optimistic_${Date.now()}` as any,
+                    _creationTime: Date.now(),
+                    userId,
+                    amount,
+                    date,
+                    timestamp: Date.now()
+                }
+            ]);
+        }
+    });
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+    const [showDrop, setShowDrop] = useState(false);
 
     const dailyGoal = Math.round(weight * 35);
     const totalIntake = hydrationData?.reduce((acc: number, curr: { amount: number }) => acc + curr.amount, 0) ?? 0;
@@ -29,7 +66,13 @@ export function HydrationCard({ weight, userId }: HydrationCardProps) {
 
     const handleAddWater = async (amount: number) => {
         playSound('CLICK');
-        await addWater({ userId, amount, date: today });
+        setShowDrop(true);
+        setTimeout(() => setShowDrop(false), 1000);
+        try {
+            await addWater({ userId, amount, date: today });
+        } catch (error) {
+            console.error("Erro ao adicionar água:", error);
+        }
     };
 
     const presets = [200, 250, 350, 500];
@@ -41,8 +84,16 @@ export function HydrationCard({ weight, userId }: HydrationCardProps) {
                 <div className="relative z-10 flex flex-col h-full">
                     <div className="flex justify-between items-center mb-6">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-blue-500/20 rounded-xl">
+                            <div className="p-2 bg-blue-500/20 rounded-xl relative">
                                 <Droplets className="w-5 h-5 text-blue-500" />
+                                {showDrop && (
+                                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-20 h-20 pointer-events-none">
+                                        <LottieAnimation
+                                            animationData={waterAnim}
+                                            loop={false}
+                                        />
+                                    </div>
+                                )}
                             </div>
                             <span className="text-lg font-bold uppercase tracking-widest opacity-60">Hidratação</span>
                         </div>

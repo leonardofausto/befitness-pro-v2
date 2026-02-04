@@ -15,6 +15,7 @@ import { WeightChart } from "@/features/dashboard/components/weight-chart";
 import { WeightHistory } from "@/features/dashboard/components/weight-history";
 import { EditProfileDialog } from "@/features/dashboard/components/edit-profile-dialog";
 import { SettingsDialog } from "@/features/dashboard/components/settings-dialog";
+import { DashboardSkeleton } from "@/features/dashboard/components/dashboard-skeleton";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import { useAppStore } from "@/lib/store";
@@ -73,11 +74,7 @@ export default function Home() {
   const isLoaded = isUserLoaded && profile !== undefined;
 
   if (!isLoaded) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   // If profile doesn't exist or wizard isn't completed
@@ -223,6 +220,7 @@ export default function Home() {
             <WeightCalendar
               entries={weights ?? []}
               hydrationEntries={hydrationHistory?.map(h => ({ date: h.date, total: h.amount, goal: Math.round(currentWeight * 35) }))}
+              initialWeightDate={profile.initialWeightDate}
               className="h-full"
             />
           </motion.div>

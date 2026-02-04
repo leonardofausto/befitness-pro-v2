@@ -5,6 +5,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ptBR } from "@clerk/localizations";
+import { PushInitializer } from "@/components/push-initializer";
+import { ThemeInitializer } from "@/components/theme-initializer";
+
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,8 +71,12 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
+              <ThemeInitializer />
+              <PushInitializer />
               {children}
             </ThemeProvider>
+
+
           </ConvexClientProvider>
         </ClerkProvider>
       </body>

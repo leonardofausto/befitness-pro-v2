@@ -29,7 +29,9 @@ export function StatsCards({
     const [isCaloriesOpen, setIsCaloriesOpen] = useState(false);
 
     const formatValue = (value: number, unit: string) => {
-        return isVisible ? `${value} ${unit}` : "••••••";
+        if (!isVisible) return "••••••";
+        const rounded = Math.round(value * 10) / 10;
+        return `${rounded}${unit ? " " + unit : ""}`;
     };
 
     return (

@@ -12,6 +12,7 @@ export default defineSchema({
     goal: v.string(), // "lose", "maintain", "gain"
     targetWeight: v.number(),
     initialWeight: v.number(),
+    initialWeightDate: v.string(), // ISO date string YYYY-MM-DD
     isWizardCompleted: v.boolean(),
   }).index("by_userId", ["userId"]),
 
@@ -37,4 +38,14 @@ export default defineSchema({
     .index("by_userId", ["userId"])
     .index("by_date", ["date"])
     .index("by_userId_date", ["userId", "date"]),
+
+  pushSubscriptions: defineTable({
+    userId: v.string(),
+    endpoint: v.string(),
+    expirationTime: v.union(v.number(), v.null()),
+    keys: v.object({
+      p256dh: v.string(),
+      auth: v.string(),
+    }),
+  }).index("by_userId", ["userId"]),
 });

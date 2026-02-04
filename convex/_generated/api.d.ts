@@ -9,6 +9,7 @@
  */
 
 import type * as hydration from "../hydration.js";
+import type * as notifications from "../notifications.js";
 import type * as profiles from "../profiles.js";
 import type * as utils from "../utils.js";
 import type * as weights from "../weights.js";
@@ -21,6 +22,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   hydration: typeof hydration;
+  notifications: typeof notifications;
   profiles: typeof profiles;
   utils: typeof utils;
   weights: typeof weights;

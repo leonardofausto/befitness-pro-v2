@@ -9,6 +9,7 @@ export const saveProfile = mutation({
         gender: v.string(),
         height: v.number(),
         weight: v.number(),
+        weightDate: v.string(),
         activityLevel: v.string(),
         goal: v.string(),
         targetWeight: v.number(),
@@ -27,6 +28,7 @@ export const saveProfile = mutation({
             gender: args.gender,
             height: args.height,
             initialWeight: args.weight,
+            initialWeightDate: args.weightDate,
             activityLevel: args.activityLevel,
             goal: args.goal,
             targetWeight: args.targetWeight,
@@ -44,12 +46,11 @@ export const saveProfile = mutation({
         // Also create initial weight entry
         const bmi = calculateBMI(args.weight, args.height);
         const calories = calculateTDEE(args.weight, args.height, args.age, args.gender, args.activityLevel);
-        const today = new Date().toISOString().split("T")[0];
 
         await ctx.db.insert("weights", {
             userId: args.userId,
             weight: args.weight,
-            date: today,
+            date: args.weightDate,
             bmi,
             calories,
             difference: 0,
@@ -67,13 +68,30 @@ export const updateProfile = mutation({
         age: v.number(),
         gender: v.string(),
         height: v.number(),
+        initialWeightDate: v.string(),
         activityLevel: v.string(),
         goal: v.string(),
         targetWeight: v.number(),
     },
     handler: async (ctx, args) => {
-        const { id, ...data } = args;
-        await ctx.db.patch(id, data);
+        const { id, initialWeightDate, ...data } = args;
+
+        const oldProfile = await ctx.db.get(id);
+        if (oldProfile && oldProfile.initialWeightDate !== initialWeightDate) {
+            // If initial weight date changed, update the corresponding weight entry
+            const entry = await ctx.db
+                .query("weights")
+                .withIndex("by_userId_date", (q) =>
+                    q.eq("userId", oldProfile.userId).eq("date", oldProfile.initialWeightDate)
+                )
+                .unique();
+
+            if (entry) {
+                await ctx.db.patch(entry._id, { date: initialWeightDate });
+            }
+        }
+
+        await ctx.db.patch(id, { ...data, initialWeightDate });
         return id;
     },
 });

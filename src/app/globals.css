@@ -100,6 +100,15 @@
   --chart-5: #ccc2dd;
 }
 
+.oled-mode.dark {
+  --background: #000000;
+  --card: #000000;
+  --popover: #000000;
+  --muted: #0a0a0a;
+  --border: #1a1a1a;
+  --secondary: #121212;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

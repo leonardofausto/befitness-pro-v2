@@ -17,15 +17,19 @@ BeFitness PRO é um ecossistema de alta performance para monitoramento de saúde
 - 🏗️ **Gasto Calórico Personalizado:** Estimativas baseadas na fórmula de Mifflin-St Jeor revisada.
 - 📅 **Calendário Evolutivo:** Acompanhamento cronológico com sinalização visual de progresso.
 - 🔐 **Privacidade Total:** Modo de visibilidade oculta para valores sensíveis no dashboard.
-- 🎨 **Design Adaptativo:** Experiência otimizada para Desktop, Tablet e Mobile.
+- 🔔 **Notificações Push Reais:** Lembretes inteligentes via Web Push API.
+- 🌑 **Otimização OLED:** Modo "Pure Black" para economia extrema de bateria.
+- ⚡ **Performance Otimista:** Interface ultra-rápida com atualizações instantâneas (Zero Lag).
+- 🎨 **Design Adaptativo:** Experiência otimizada para Desktop, Tablet e Mobile com Skeletons de carregamento.
 
 ## 🛠️ Stack Tecnológica
 
 - **Frontend:** Next.js 15 (App Router), React 19.
-- **Estilização:** Tailwind CSS v4, Framer Motion, Lucid UI.
+- **Estilização & Animação:** Tailwind CSS v4, Framer Motion, Lottie React.
 - **Backend:** Convex (Real-time DB & Cloud Functions).
 - **Autenticação:** Clerk (Social & Email Login).
-- **Componentes:** Shadcn/UI, Magic UI.
+- **Notificações:** Web-Push API & VAPID.
+- **Componentes:** Shadcn/UI, Magic UI, Lucide React.
 
 ## 🚀 Começando
 

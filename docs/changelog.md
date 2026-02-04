@@ -1,5 +1,29 @@
 # Registro de Alterações (Changelog)
 
+## [0.5.0] - 2026-02-04
+### Adicionado
+- **Sistema Real de Push Notifications**: Implementação nativa via Web Push API e VAPID.
+  - Solicitação de permissão integrada nas configurações.
+  - Registro de Service Worker (`sw.js`) para recebimento de notificações em segundo plano.
+  - Armazenamento seguro de assinaturas no banco Convex.
+- **Otimização para Telas OLED**: Novo modo "Pure Black" para economia de bateria e contraste infinito.
+  - Ativação manual via configurações.
+  - Injeção dinâmica de propriedades CSS para fundo #000000.
+- **Micro-interações com Lottie**: Adição de feedback visual animado.
+  - Animação de sucesso ao registrar peso.
+  - Efeito de gota d'água ao registrar hidratação.
+  - Componente genérico `LottieAnimation` para expansão futura.
+- **Skeletons de Carregamento**: Substituição do loader genérico por placeholders que imitam a estrutura do dashboard, melhorando a percepção de performance.
+
+### Alterado
+- **Atualizações Otimistas (Optimistic Updates)**: Registro de peso e hidratação agora atualizam a interface instantaneamente antes mesmo da confirmação do servidor.
+- **Refinamento do Calendário**: O ícone de "Início da Jornada" (Foguete) agora possui um badge com desfoque de fundo e tooltip informativo.
+
+### Corrigido
+- Erro de `InvalidAccessError` na inscrição de notificações push devido a chaves VAPID malformadas.
+- Sincronização de estado do `isOledMode` no armazenamento persistente do Zustand.
+
+
 ## [0.4.0] - 2026-02-04
 ### Adicionado
 - **Rastreador de Hidratação**: Sistema completo para monitoramento de ingestão de água.

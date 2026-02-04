@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { getLocalDate } from "@/lib/utils";
 
 const steps = [
     { id: 1, title: "Dados Pessoais", description: "Conte-nos um pouco sobre você.", icon: "👤" },
@@ -27,12 +28,13 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
     const saveProfile = useMutation(api.profiles.saveProfile);
 
     const form = useForm<OnboardingData>({
-        resolver: zodResolver(onboardingSchema),
+        resolver: zodResolver(onboardingSchema) as any,
         defaultValues: {
             name: "",
             age: undefined as any,
             gender: undefined as any,
             weight: undefined as any,
+            weightDate: getLocalDate(),
             height: undefined as any,
             activityLevel: undefined as any,
             goal: undefined as any,
@@ -42,7 +44,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
 
     const nextStep = async () => {
         const fieldsToValidate = currentStep === 1
-            ? ["name", "age", "gender", "weight", "height"]
+            ? ["name", "age", "gender", "weight", "weightDate", "height"]
             : ["activityLevel", "goal", "targetWeight"];
 
         const isValid = await form.trigger(fieldsToValidate as any);
@@ -177,14 +179,16 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                                                         <FormLabel>Peso Atual (kg)</FormLabel>
                                                         <FormControl>
                                                             <Input
-                                                                type="number"
-                                                                step="0.1"
-                                                                placeholder="ex: 70.5"
+                                                                type="text"
+                                                                inputMode="decimal"
+                                                                placeholder="ex: 70,5"
                                                                 {...field}
                                                                 value={field.value ?? ""}
                                                                 onChange={e => {
-                                                                    const val = e.target.value === "" ? "" : parseFloat(e.target.value);
-                                                                    field.onChange(val);
+                                                                    const val = e.target.value.replace(',', '.');
+                                                                    if (val === "" || !isNaN(Number(val)) || val.endsWith('.')) {
+                                                                        field.onChange(val);
+                                                                    }
                                                                 }}
                                                             />
                                                         </FormControl>
@@ -193,21 +197,16 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                                                 )}
                                             />
                                             <FormField
-                                                control={form.control}
-                                                name="height"
+                                                control={form.control as any}
+                                                name="weightDate"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Altura (cm)</FormLabel>
+                                                        <FormLabel>Data do Peso</FormLabel>
                                                         <FormControl>
                                                             <Input
-                                                                type="number"
-                                                                placeholder="ex: 175"
+                                                                type="date"
                                                                 {...field}
-                                                                value={field.value ?? ""}
-                                                                onChange={e => {
-                                                                    const val = e.target.value === "" ? "" : parseInt(e.target.value);
-                                                                    field.onChange(val);
-                                                                }}
+                                                                className="w-full h-12 rounded-xl border-border bg-background"
                                                             />
                                                         </FormControl>
                                                         <FormMessage />
@@ -215,6 +214,28 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                                                 )}
                                             />
                                         </div>
+                                        <FormField
+                                            control={form.control}
+                                            name="height"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Altura (cm)</FormLabel>
+                                                    <FormControl>
+                                                        <Input
+                                                            type="number"
+                                                            placeholder="ex: 175"
+                                                            {...field}
+                                                            value={field.value ?? ""}
+                                                            onChange={e => {
+                                                                const val = e.target.value === "" ? "" : parseInt(e.target.value);
+                                                                field.onChange(val);
+                                                            }}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
                                     </motion.div>
                                 )}
 
@@ -281,14 +302,16 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                                                         <FormLabel>Meta (kg)</FormLabel>
                                                         <FormControl>
                                                             <Input
-                                                                type="number"
-                                                                step="0.1"
-                                                                placeholder="ex: 65"
+                                                                type="text"
+                                                                inputMode="decimal"
+                                                                placeholder="ex: 65,0"
                                                                 {...field}
                                                                 value={field.value ?? ""}
                                                                 onChange={e => {
-                                                                    const val = e.target.value === "" ? "" : parseFloat(e.target.value);
-                                                                    field.onChange(val);
+                                                                    const val = e.target.value.replace(',', '.');
+                                                                    if (val === "" || !isNaN(Number(val)) || val.endsWith('.')) {
+                                                                        field.onChange(val);
+                                                                    }
                                                                 }}
                                                             />
                                                         </FormControl>

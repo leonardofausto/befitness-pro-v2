@@ -12,15 +12,47 @@ import { api } from "../../../../convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { playSound } from "@/lib/sounds";
+import { LottieAnimation } from "@/components/lottie-animation";
+import successAnim from "../../../../public/animations/success.json";
+
+import { getLocalDate } from "@/lib/utils";
 
 export function AddWeightDialog() {
     const { user } = useUser();
     const [weight, setWeight] = useState("");
-    const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
+    const [date, setDate] = useState(getLocalDate());
     const [open, setOpen] = useState(false);
     const [isPending, setIsPending] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
-    const addWeight = useMutation(api.weights.addWeight);
+    const addWeight = useMutation(api.weights.addWeight).withOptimisticUpdate((localStore, args) => {
+        const { userId, weight, date } = args;
+        const currentData = localStore.getQuery(api.weights.getWeights, { userId });
+        if (currentData !== undefined) {
+            const existingIndex = currentData.findIndex(w => w.date === date);
+            let updatedData = [...currentData];
+
+            const optimisticEntry = {
+                _id: `optimistic_${Date.now()}` as any,
+                _creationTime: Date.now(),
+                userId,
+                weight,
+                date,
+                bmi: 0,
+                calories: 0,
+                difference: 0,
+                status: "maintained"
+            };
+
+            if (existingIndex !== -1) {
+                updatedData[existingIndex] = { ...currentData[existingIndex], weight };
+            } else {
+                updatedData = [optimisticEntry, ...updatedData].sort((a, b) => b.date.localeCompare(a.date));
+            }
+
+            localStore.setQuery(api.weights.getWeights, { userId }, updatedData);
+        }
+    });
 
     const handleNumberChange = (val: string) => {
         // Strip leading zeros unless it's just "0" or "0.something"
@@ -41,8 +73,12 @@ export function AddWeightDialog() {
                 date,
             });
             playSound('SUCCESS');
-            setOpen(false);
-            setWeight("");
+            setShowSuccess(true);
+            setTimeout(() => {
+                setShowSuccess(false);
+                setOpen(false);
+                setWeight("");
+            }, 2000);
         } catch (error) {
             console.error("Erro ao adicionar peso:", error);
         } finally {
@@ -90,43 +126,59 @@ export function AddWeightDialog() {
                     </div>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 gap-6">
-                        <div className="space-y-2">
-                            <Label htmlFor="weight" className="text-foreground/90 font-bold ml-1">Peso (kg)</Label>
-                            <Input
-                                id="weight"
-                                type="number"
-                                step="0.1"
-                                placeholder="0.0"
-                                value={weight}
-                                onChange={(e) => handleNumberChange(e.target.value)}
-                                className={inputStyles}
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="date" className="text-foreground/90 font-bold ml-1">Data da Pesagem</Label>
-                            <Input
-                                id="date"
-                                type="date"
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                                className={inputStyles}
-                                required
-                            />
-                        </div>
+                {showSuccess ? (
+                    <div className="flex flex-col items-center justify-center py-10 scale-150">
+                        <LottieAnimation
+                            animationData={successAnim}
+                            loop={false}
+                            className="w-48 h-48"
+                        />
+                        <h3 className="text-2xl font-black text-primary animate-bounce mt-4">Peso Registrado!</h3>
                     </div>
+                ) : (
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-1 gap-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="weight" className="text-foreground/90 font-bold ml-1">Peso (kg)</Label>
+                                <Input
+                                    id="weight"
+                                    type="text"
+                                    inputMode="decimal"
+                                    placeholder="ex: 70,5"
+                                    value={weight}
+                                    onChange={(e) => {
+                                        const val = e.target.value.replace(',', '.');
+                                        if (val === "" || !isNaN(Number(val))) {
+                                            setWeight(val);
+                                        }
+                                    }}
+                                    className={inputStyles}
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="date" className="text-foreground/90 font-bold ml-1">Data da Pesagem</Label>
+                                <Input
+                                    id="date"
+                                    type="date"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                    className={inputStyles}
+                                    required
+                                />
+                            </div>
+                        </div>
 
-                    <Button
-                        type="submit"
-                        disabled={isPending}
-                        className="w-full h-10 rounded-xl bg-primary hover:bg-primary/90 text-sm font-bold shadow-lg transition-all active:scale-[0.98] mt-2"
-                    >
-                        {isPending ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <Save className="mr-2 h-4 w-4" />}
-                        Salvar Registro
-                    </Button>
-                </form>
+                        <Button
+                            type="submit"
+                            disabled={isPending}
+                            className="w-full h-10 rounded-xl bg-primary hover:bg-primary/90 text-sm font-bold shadow-lg transition-all active:scale-[0.98] mt-2"
+                        >
+                            {isPending ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <Save className="mr-2 h-4 w-4" />}
+                            Salvar Registro
+                        </Button>
+                    </form>
+                )}
             </DialogContent>
         </Dialog>
     );

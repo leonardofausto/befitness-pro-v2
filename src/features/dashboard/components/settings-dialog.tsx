@@ -14,6 +14,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { playSound } from "@/lib/sounds";
 import { useUser } from "@clerk/nextjs";
+import { usePushNotifications } from "@/hooks/use-push-notifications";
+
 
 const MySwal = withReactContent(Swal);
 
@@ -28,10 +30,13 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
     const {
         isValuesVisible, setIsValuesVisible,
         isSoundEnabled, setIsSoundEnabled,
-        isNotificationsEnabled, setIsNotificationsEnabled
+        isNotificationsEnabled, setIsNotificationsEnabled,
+        isOledMode, setIsOledMode
     } = useAppStore();
     const [isResetting, setIsResetting] = useState(false);
     const resetData = useMutation(api.profiles.resetUserData);
+    const { subscribe, isSupported } = usePushNotifications();
+
 
     const handleReset = async () => {
         const result = await MySwal.fire({
@@ -151,6 +156,26 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                             <div className="flex items-center justify-between p-1.5">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-background rounded-lg shadow-sm">
+                                        <div className="w-4 h-4 bg-black rounded-sm border border-primary/20" />
+                                    </div>
+                                    <div className="space-y-0.5">
+                                        <p className="text-xs font-bold">Otimização OLED</p>
+                                        <p className="text-[9px] text-muted-foreground">Preto puro para economia de bateria</p>
+                                    </div>
+                                </div>
+                                <Switch
+                                    checked={isOledMode}
+                                    onCheckedChange={(val) => {
+                                        playSound('CLICK');
+                                        setIsOledMode(val);
+                                    }}
+                                    className="scale-90"
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-between p-1.5">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-background rounded-lg shadow-sm">
                                         <Volume2 className="w-4 h-4 text-primary" />
                                     </div>
                                     <div className="space-y-0.5">
@@ -182,12 +207,17 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                                 </div>
                                 <Switch
                                     checked={isNotificationsEnabled}
-                                    onCheckedChange={(val) => {
+                                    onCheckedChange={async (val) => {
                                         playSound('CLICK');
+                                        if (val && isSupported) {
+                                            await subscribe();
+                                        }
                                         setIsNotificationsEnabled(val);
                                     }}
+                                    disabled={!isSupported}
                                     className="scale-90"
                                 />
+
                             </div>
                         </div>
                     </div>

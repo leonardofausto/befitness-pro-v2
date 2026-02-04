@@ -22,6 +22,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { playSound } from "@/lib/sounds";
+import { parseLocalDate } from "@/lib/utils";
 
 interface HydrationHistoryDialogProps {
     open: boolean;
@@ -41,7 +42,7 @@ export function HydrationHistoryDialog({ open, onOpenChange, userId }: Hydration
 
     const years = useMemo(() => {
         if (!allHydration) return [];
-        const uniqueYears = Array.from(new Set(allHydration.map(h => getYear(new Date(h.date)).toString())));
+        const uniqueYears = Array.from(new Set(allHydration.map(h => parseLocalDate(h.date).getFullYear().toString())));
         return uniqueYears.sort((a, b) => b.localeCompare(a));
     }, [allHydration]);
 
@@ -63,9 +64,9 @@ export function HydrationHistoryDialog({ open, onOpenChange, userId }: Hydration
     const filteredHydration = useMemo(() => {
         if (!allHydration) return [];
         return allHydration.filter(h => {
-            const date = new Date(h.date);
-            const yearMatch = selectedYear === "all" || getYear(date).toString() === selectedYear;
-            const monthMatch = selectedMonth === "all" || getMonth(date).toString() === selectedMonth;
+            const date = parseLocalDate(h.date);
+            const yearMatch = selectedYear === "all" || date.getFullYear().toString() === selectedYear;
+            const monthMatch = selectedMonth === "all" || date.getMonth().toString() === selectedMonth;
             return yearMatch && monthMatch;
         });
     }, [allHydration, selectedYear, selectedMonth]);
@@ -136,9 +137,9 @@ export function HydrationHistoryDialog({ open, onOpenChange, userId }: Hydration
                                     <span className="font-bold text-lg text-blue-500">{item.amount}ml</span>
                                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                         <Calendar className="w-3 h-3" />
-                                        {format(new Date(item.date), "dd 'de' MMMM", { locale: ptBR })}
+                                        {format(parseLocalDate(item.date), "dd 'de' MMMM", { locale: ptBR })}
                                         <span className="opacity-40">•</span>
-                                        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        {new Date(item.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                                     </div>
                                 </div>
 
