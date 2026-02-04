@@ -74,7 +74,7 @@ export function CalorieStatsDialog({
             <DialogContent
                 onPointerDownOutside={(e) => e.preventDefault()}
                 onInteractOutside={(e) => e.preventDefault()}
-                className="w-[95vw] sm:w-fit sm:min-w-[600px] sm:max-w-[900px] rounded-[3rem] border border-primary/20 bg-background p-10 max-h-[95vh] overflow-y-auto shadow-2xl scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent hover:scrollbar-thumb-primary/20"
+                className="w-[95vw] sm:w-fit sm:min-w-[600px] sm:max-w-[800px] rounded-[2rem] sm:rounded-[3rem] border border-primary/20 bg-background p-6 sm:p-10 max-h-[95vh] overflow-y-auto shadow-2xl scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent hover:scrollbar-thumb-primary/20"
             >
                 <DialogHeader className="mb-8">
                     <div className="flex items-center gap-4 mb-2">

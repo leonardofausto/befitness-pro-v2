@@ -193,7 +193,7 @@ export function WeightHistory({ weights, isVisible = true, className }: WeightHi
                 <DialogContent
                     onPointerDownOutside={(e) => e.preventDefault()}
                     onInteractOutside={(e) => e.preventDefault()}
-                    className="sm:max-w-[600px] rounded-[3rem] border border-primary/20 bg-background p-10 h-[90vh] flex flex-col overflow-hidden shadow-2xl"
+                    className="w-[95vw] sm:max-w-[600px] rounded-[2rem] sm:rounded-[3rem] border border-primary/20 bg-background p-6 sm:p-10 h-[90vh] flex flex-col overflow-hidden shadow-2xl"
                 >
                     <DialogHeader className="mb-6">
                         <div className="flex items-center gap-4 mb-2">
@@ -207,7 +207,7 @@ export function WeightHistory({ weights, isVisible = true, className }: WeightHi
                         </div>
                     </DialogHeader>
 
-                    <div className="grid grid-cols-3 gap-3 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
                         <div className="space-y-1">
                             <span className="text-[10px] font-bold uppercase text-muted-foreground ml-1">Ano</span>
                             <Select value={selectedYear} onValueChange={setSelectedYear}>

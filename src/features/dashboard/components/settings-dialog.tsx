@@ -85,7 +85,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                 id="settings-modal-content"
                 onPointerDownOutside={(e) => e.preventDefault()}
                 onInteractOutside={(e) => e.preventDefault()}
-                className="sm:max-w-[700px] rounded-[3rem] border border-primary/20 shadow-2xl bg-background p-10 max-h-[95vh] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent hover:scrollbar-thumb-primary/20"
+                className="w-[95vw] sm:max-w-[700px] rounded-[2rem] sm:rounded-[3rem] border border-primary/20 shadow-2xl bg-background p-6 sm:p-10 max-h-[95vh] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent hover:scrollbar-thumb-primary/20"
             >
                 <DialogHeader className="mb-8">
                     <div className="flex items-center gap-4 mb-2">

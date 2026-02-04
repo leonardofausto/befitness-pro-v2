@@ -89,7 +89,7 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
             <DialogContent
                 onPointerDownOutside={(e) => e.preventDefault()}
                 onInteractOutside={(e) => e.preventDefault()}
-                className="sm:max-w-[500px] rounded-[3rem] border border-primary/20 shadow-2xl bg-background max-h-[95vh] overflow-y-auto p-10"
+                className="w-[95vw] sm:max-w-[500px] rounded-[2rem] sm:rounded-[3rem] border border-primary/20 shadow-2xl bg-background max-h-[95vh] overflow-y-auto p-6 sm:p-10"
             >
                 <DialogHeader className="mb-8">
                     <div className="flex items-center gap-4 mb-2">
@@ -100,14 +100,14 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                             <DialogTitle className="text-3xl font-black tracking-tight text-primary">
                                 Editar Perfil
                             </DialogTitle>
-                            <DialogDescription className="text-xs font-semibold text-muted-foreground/80 whitespace-nowrap">Mantenha seus dados atualizados para cálculos precisos.</DialogDescription>
+                            <DialogDescription className="text-xs font-semibold text-muted-foreground/80">Mantenha seus dados atualizados para cálculos precisos.</DialogDescription>
                         </div>
                     </div>
                 </DialogHeader>
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-6">
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                             {/* Nome e Gênero */}
                             <FormField
                                 control={form.control as any}

@@ -158,7 +158,7 @@ export default function Home() {
           className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8"
         >
           <div>
-            <h2 className="text-5xl font-black tracking-tighter">Olá, {profile.name}! 👋</h2>
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter">Olá, {profile.name}! 👋</h2>
             <p className="text-muted-foreground mt-2 text-xl font-medium">Aqui está seu progresso de hoje.</p>
           </div>
           <AddWeightDialog />

@@ -72,7 +72,7 @@ export function AddWeightDialog() {
             <DialogContent
                 onPointerDownOutside={(e) => e.preventDefault()}
                 onInteractOutside={(e) => e.preventDefault()}
-                className="sm:max-w-[500px] rounded-[3rem] border border-primary/20 shadow-2xl bg-background max-h-[95vh] overflow-y-auto p-10"
+                className="w-[95vw] sm:max-w-[500px] rounded-[2rem] sm:rounded-[3rem] border border-primary/20 shadow-2xl bg-background max-h-[95vh] overflow-y-auto p-6 sm:p-10"
             >
                 <DialogHeader className="mb-8">
                     <div className="flex items-center gap-4 mb-2">
@@ -83,7 +83,7 @@ export function AddWeightDialog() {
                             <DialogTitle className="text-3xl font-black tracking-tight text-primary">
                                 Registrar Peso
                             </DialogTitle>
-                            <DialogDescription className="text-xs font-semibold text-muted-foreground/80 whitespace-nowrap">
+                            <DialogDescription className="text-xs font-semibold text-muted-foreground/80">
                                 Insira seu peso atual para atualizar seu progresso.
                             </DialogDescription>
                         </div>
