@@ -30,9 +30,9 @@ export const metadata: Metadata = {
     description: "Controle completo de peso e bem-estar na palma da sua mão.",
     images: [{
       url: "https://befitness-pro-v2.vercel.app/logo.png",
-      width: 512,
-      height: 512,
-      alt: "beFitness PRO Logo"
+      width: 1200,
+      height: 630,
+      alt: "beFitness PRO - Seu progresso em um só lugar"
     }],
     type: "website",
     siteName: "beFitness PRO",
