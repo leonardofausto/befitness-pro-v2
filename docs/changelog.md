@@ -1,5 +1,17 @@
 # Registro de Alterações (Changelog)
 
+## [0.7.0] - 2026-02-04
+### Adicionado
+- **Novo Par de Chaves VAPID**: Substituição das chaves antigas por um par válido de 65 bytes (P-256), garantindo compatibilidade universal com a Web Push API.
+
+### Corrigido
+- **Bug de "Meta Atingida" Prematuro**: Refatoração completa da lógica de progresso no Dashboard.
+  - Agora valida corretamente os objetivos de "Perder", "Ganhar" e "Manter" peso.
+  - Implementação de cálculo de porcentagem direcional (não aumenta se estiver se distanciando da meta).
+  - Indicadores de cor (verde/indigo) agora respondem ao progresso real em relação ao objetivo.
+- **Erro `InvalidAccessError` em Notificações**: Fix na inscrição de push causado por chaves malformadas (88 caracteres vs 87 esperados).
+- **Estabilidade de Inscrição**: Adicionado `useCallback` no hook de notificações e limpeza de espaços em branco (`.trim()`) nas chaves de ambiente para evitar falhas no Turbopack.
+
 ## [0.6.0] - 2026-02-04
 ### Adicionado
 - **Integração de Tema com Clerk**: Implementação do tema escuro oficial no formulário de login e cadastro.

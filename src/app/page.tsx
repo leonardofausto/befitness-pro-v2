@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useUser, useClerk } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
@@ -102,6 +102,44 @@ export default function Home() {
   const currentWeight = latestWeight?.weight ?? profile.initialWeight;
   const currentBMI = latestWeight?.bmi ?? 0;
   const currentCalories = latestWeight?.calories ?? 0;
+
+  // Calculate goal progress and status
+  const goalProgress = useMemo(() => {
+    const initial = profile.initialWeight;
+    const target = profile.targetWeight;
+    const current = currentWeight;
+    const goal = profile.goal;
+
+    // Determine if goal is reached
+    let isReached = false;
+    if (goal === "lose") {
+      isReached = current <= target;
+    } else if (goal === "gain") {
+      isReached = current >= target;
+    } else if (goal === "maintain") {
+      isReached = Math.abs(current - target) <= 0.2;
+    }
+
+    // Calculate progress percentage
+    const totalDiff = target - initial;
+    const currentDiff = current - initial;
+
+    let percent = 0;
+    if (isReached) {
+      percent = 100;
+    } else if (totalDiff !== 0) {
+      percent = (currentDiff / totalDiff) * 100;
+      percent = Math.max(0, Math.min(100, percent));
+    }
+
+    return {
+      percent: Math.round(percent),
+      isReached,
+      totalRemaining: Math.abs(current - target),
+      totalChanged: current - initial,
+      isPositiveProgress: goal === "lose" ? current < initial : goal === "gain" ? current > initial : Math.abs(current - initial) <= 0.2
+    };
+  }, [profile.initialWeight, profile.targetWeight, profile.goal, currentWeight]);
 
   return (
     <main className="min-h-screen bg-background p-4 md:p-8 text-foreground transition-colors duration-300 relative">
@@ -242,18 +280,14 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col items-end">
                     <span className="text-3xl font-black text-indigo-500">
-                      {isValuesVisible ? `${Math.round(Math.min(100, Math.abs((profile.initialWeight - currentWeight) / (profile.initialWeight - profile.targetWeight)) * 100)) || 0}%` : "••%"}
+                      {isValuesVisible ? `${goalProgress.percent}%` : "••%"}
                     </span>
                     {isValuesVisible && (
                       <span className={cn(
                         "text-[10px] font-bold uppercase transition-colors duration-500",
-                        (profile.goal === "lose" ? currentWeight <= profile.targetWeight : currentWeight >= profile.targetWeight)
-                          ? "text-green-500 opacity-100"
-                          : "opacity-40"
+                        goalProgress.isReached ? "text-green-500 opacity-100" : "opacity-40"
                       )}>
-                        {(profile.goal === "lose" ? currentWeight <= profile.targetWeight : currentWeight >= profile.targetWeight)
-                          ? "Meta Atingida! 🏆"
-                          : "da meta total"}
+                        {goalProgress.isReached ? "Meta Atingida! 🏆" : "da meta total"}
                       </span>
                     )}
                   </div>
@@ -277,7 +311,7 @@ export default function Home() {
                   <div className="h-4 w-full bg-muted/50 rounded-full overflow-hidden mb-2">
                     <motion.div
                       initial={{ width: 0 }}
-                      animate={{ width: `${Math.min(100, Math.round(Math.abs((profile.initialWeight - currentWeight) / (profile.initialWeight - profile.targetWeight)) * 100) || 0)}%` }}
+                      animate={{ width: `${goalProgress.percent}%` }}
                       transition={{ duration: 1.5, ease: "easeOut" }}
                       className="h-full bg-indigo-500 rounded-full shadow-[0_0_20px_rgba(99,102,241,0.5)]"
                     />
@@ -292,9 +326,9 @@ export default function Home() {
                       <p className="text-[10px] font-bold uppercase opacity-40">Total</p>
                       <p className={cn(
                         "text-sm font-black",
-                        currentWeight < profile.initialWeight ? "text-green-500" : "text-indigo-500"
+                        goalProgress.isPositiveProgress ? "text-green-500" : "text-indigo-500"
                       )}>
-                        {isValuesVisible ? `${(currentWeight - profile.initialWeight).toFixed(1)}kg` : "•••••"}
+                        {isValuesVisible ? `${goalProgress.totalChanged.toFixed(1)}kg` : "•••••"}
                       </p>
                     </div>
                     <div className="text-center">

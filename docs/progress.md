@@ -4,7 +4,7 @@ Acompanhamento detalhado do desenvolvimento do ecossistema BeFitness PRO.
 
 | Check | Atividade / Funcionalidade           | Fase     | Dificuldade | Tempo Est. | % Proc. | Status    |
 | :---: | :----------------------------------- | :------: | :---------: | :--------: | :-----: | :-------- |
-|  (x)  | Configuração de Backend (Convex)     | Fundação |    Média    |     4h     |  100%   | Concluído |
+|  (x)  | Configuração de PWA e Web Push      |  Deploy  |    Média    |     6h     |  100%   | Concluído |
 |  (x)  | Autenticação e Segurança (Clerk)     | Fundação |    Média    |     3h     |  100%   | Concluído |
 |  (x)  | Sistema de Design e Tokens M3        | Fundação |    Alta     |     8h     |  100%   | Concluído |
 |  (x)  | Assistente de Integração (Onboarding)| Fundação |    Média    |     5h     |  100%   | Concluído |
@@ -26,6 +26,8 @@ Acompanhamento detalhado do desenvolvimento do ecossistema BeFitness PRO.
 |  (x)  | Exportação de Histórico (CSV)        | Expansão |    Média    |     3h     |  100%   | Concluído |
 |  (x)  | Unificação de Onboarding Visual     |  UI/UX   |    Média    |     2h     |  100%   | Concluído |
 |  (x)  | Registro de Tema Dark (Clerk)        | Fundação |    Baixa    |     1h     |  100%   | Concluído |
+|  (x)  | Correção de Lógica de Metas (Lose/Gain)|  Core   |    Média    |     2h     |  100%   | Concluído |
+|  (x)  | Estabilização de Web Push (VAPID)    |  Deploy  |    Média    |     3h     |  100%   | Concluído |
 |  ( )  | Rastreamento de Macronutrientes      | Expansão |    Alta     |    10h     |   0%    | Futuro    |
 
 ### Detalhamento da Estrutura (Legenda)
