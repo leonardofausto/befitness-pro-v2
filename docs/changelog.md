@@ -1,5 +1,19 @@
 # Registro de Alterações (Changelog)
 
+## [0.6.0] - 2026-02-04
+### Adicionado
+- **Integração de Tema com Clerk**: Implementação do tema escuro oficial no formulário de login e cadastro.
+- **Unificação do Onboarding**: O fluxo inicial foi simplificado para um passo único com layout 3x3, eliminando a navegação entre telas.
+
+### Alterado
+- **Sincronização de Perfil**: O diálogo de edição agora usa sincronização forçada (`form.reset`) para garantir que os dados reais do banco sejam sempre exibidos ao abrir.
+- **Identidade Visual**: Padronização global para o tema escuro como padrão em todo o sistema.
+- **Renomeação de Campos**: "Data do Peso" alterada para "Início da Jornada" para maior clareza semântica.
+- **Layout de Onboarding**: Espaçamentos (Gap) aumentados no Wizard inicial para melhor preenchimento visual e equilíbrio de design.
+
+### Corrigido
+- Problema em que campos numéricos (Idade/Altura) apareciam zerados ou vazios no diálogo de edição mesmo com dados existentes no banco.
+
 ## [0.5.1] - 2026-02-04
 ### Adicionado
 - **Exportação de Dados**: Adicionada funcionalidade de exportação do histórico de pesagem para formato CSV (;).

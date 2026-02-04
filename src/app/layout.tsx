@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ptBR } from "@clerk/localizations";
+import { dark } from "@clerk/themes";
 import { PushInitializer } from "@/components/push-initializer";
 import { ThemeInitializer } from "@/components/theme-initializer";
 
@@ -63,12 +64,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ClerkProvider localization={ptBR}>
+        <ClerkProvider localization={ptBR} appearance={{ baseTheme: dark }}>
           <ConvexClientProvider>
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
-              enableSystem
+              defaultTheme="dark"
+              enableSystem={false}
               disableTransitionOnChange
             >
               <ThemeInitializer />

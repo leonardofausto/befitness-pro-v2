@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -41,7 +41,7 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
 
     const form = useForm<ProfileFormValues>({
         resolver: zodResolver(profileSchema) as any,
-        values: {
+        defaultValues: {
             name: initialData?.name || "",
             age: initialData?.age || 0,
             gender: initialData?.gender || "",
@@ -53,11 +53,32 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
         },
     });
 
+    // Sincroniza o formulário quando os dados iniciais mudarem ou o modal abrir
+    useEffect(() => {
+        if (open && initialData) {
+            form.reset({
+                name: initialData.name,
+                age: initialData.age,
+                gender: initialData.gender,
+                height: initialData.height,
+                initialWeightDate: initialData.initialWeightDate,
+                activityLevel: initialData.activityLevel,
+                goal: initialData.goal,
+                targetWeight: initialData.targetWeight,
+            });
+        }
+    }, [open, initialData, form]);
+
     const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>, onChange: (val: number) => void) => {
         const val = e.target.value;
-        let processed = val.replace(/^0+(?=\d)/, '');
-        if (processed === '') processed = '0';
-        onChange(Number(processed));
+        if (val === "") {
+            onChange(0);
+            return;
+        }
+        const numericVal = Number(val);
+        if (!isNaN(numericVal)) {
+            onChange(numericVal);
+        }
     };
 
     async function onSubmit(values: ProfileFormValues) {
@@ -92,7 +113,7 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
             <DialogContent
                 onPointerDownOutside={(e) => e.preventDefault()}
                 onInteractOutside={(e) => e.preventDefault()}
-                className="w-[95vw] sm:max-w-[500px] rounded-[2rem] sm:rounded-[3rem] border border-primary/20 shadow-2xl bg-background max-h-[95vh] overflow-y-auto p-6 sm:p-10"
+                className="w-[95vw] sm:max-w-[850px] sm:min-h-[600px] rounded-[2rem] sm:rounded-[3rem] border border-primary/20 shadow-2xl bg-background max-h-[95vh] overflow-y-auto p-6 sm:p-10 flex flex-col justify-center"
             >
                 <DialogHeader className="mb-8">
                     <div className="flex items-center gap-4 mb-2">
@@ -109,9 +130,9 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                 </DialogHeader>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-6">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                            {/* Nome e Gênero */}
+                    <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-6 flex-1 flex flex-col">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 flex-1">
+                            {/* Row 1: Nome, Idade, Gênero */}
                             <FormField
                                 control={form.control as any}
                                 name="name"
@@ -125,30 +146,6 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control as any}
-                                name="gender"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="text-foreground/90 font-bold">Gênero</FormLabel>
-                                        <Select onValueChange={field.onChange} value={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger className={selectTriggerStyles}>
-                                                    <SelectValue placeholder="Gênero" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent className={selectContentStyles} position="popper" sideOffset={0}>
-                                                <SelectItem value="male" className="rounded-lg focus:bg-primary/20 font-medium py-3">Masculino</SelectItem>
-                                                <SelectItem value="female" className="rounded-lg focus:bg-primary/20 font-medium py-3">Feminino</SelectItem>
-                                                <SelectItem value="other" className="rounded-lg focus:bg-primary/20 font-medium py-3">Outro</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            {/* Idade e Altura */}
                             <FormField
                                 control={form.control as any}
                                 name="age"
@@ -169,15 +166,38 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                             />
                             <FormField
                                 control={form.control as any}
-                                name="height"
+                                name="gender"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-foreground/90 font-bold">Altura (cm)</FormLabel>
+                                        <FormLabel className="text-foreground/90 font-bold">Gênero</FormLabel>
+                                        <Select onValueChange={field.onChange} value={field.value || ""}>
+                                            <FormControl>
+                                                <SelectTrigger className={selectTriggerStyles}>
+                                                    <SelectValue placeholder="Gênero" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent className={selectContentStyles} position="popper" sideOffset={0}>
+                                                <SelectItem value="male" className="rounded-lg focus:bg-primary/20 font-medium py-3">Masculino</SelectItem>
+                                                <SelectItem value="female" className="rounded-lg focus:bg-primary/20 font-medium py-3">Feminino</SelectItem>
+                                                <SelectItem value="other" className="rounded-lg focus:bg-primary/20 font-medium py-3">Outro</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            {/* Row 2: Início da Jornada, Nível de Atividade, Objetivo */}
+                            <FormField
+                                control={form.control as any}
+                                name="initialWeightDate"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-foreground/90 font-bold">Início da Jornada</FormLabel>
                                         <FormControl>
                                             <Input
-                                                type="number"
+                                                type="date"
                                                 {...field}
-                                                onChange={(e) => handleNumberChange(e, field.onChange)}
                                                 className={inputStyles}
                                             />
                                         </FormControl>
@@ -185,15 +205,13 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                                     </FormItem>
                                 )}
                             />
-
-                            {/* Nível de Atividade e Objetivo */}
                             <FormField
                                 control={form.control as any}
                                 name="activityLevel"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-foreground/90 font-bold">Nível de Atividade</FormLabel>
-                                        <Select onValueChange={field.onChange} value={field.value}>
+                                        <Select onValueChange={field.onChange} value={field.value || ""}>
                                             <FormControl>
                                                 <SelectTrigger className={selectTriggerStyles}>
                                                     <SelectValue placeholder="Nível" className="truncate" />
@@ -217,7 +235,7 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-foreground/90 font-bold">Objetivo</FormLabel>
-                                        <Select onValueChange={field.onChange} value={field.value}>
+                                        <Select onValueChange={field.onChange} value={field.value || ""}>
                                             <FormControl>
                                                 <SelectTrigger className={selectTriggerStyles}>
                                                     <SelectValue placeholder="Objetivo" />
@@ -234,7 +252,25 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                                 )}
                             />
 
-                            {/* Peso Atual e Peso Alvo */}
+                            {/* Row 3: Altura, Peso Atual, Peso Alvo */}
+                            <FormField
+                                control={form.control as any}
+                                name="height"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-foreground/90 font-bold">Altura (cm)</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                {...field}
+                                                onChange={(e) => handleNumberChange(e, field.onChange)}
+                                                className={inputStyles}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormItem>
                                 <FormLabel className="text-foreground/90 font-bold">Peso Atual (kg)</FormLabel>
                                 <FormControl>
@@ -243,23 +279,6 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                                     </div>
                                 </FormControl>
                             </FormItem>
-                            <FormField
-                                control={form.control as any}
-                                name="initialWeightDate"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="text-foreground/90 font-bold">Início da Jornada</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="date"
-                                                {...field}
-                                                className={inputStyles}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
                             <FormField
                                 control={form.control as any}
                                 name="targetWeight"
@@ -291,7 +310,7 @@ export function EditProfileDialog({ open, onOpenChange, initialData, currentWeig
                         <Button
                             type="submit"
                             disabled={isPending}
-                            className="w-full h-10 rounded-xl bg-primary hover:bg-primary/90 text-sm font-bold shadow-lg transition-all active:scale-[0.98] mt-2"
+                            className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-sm font-bold shadow-lg transition-all active:scale-[0.98] mt-auto"
                         >
                             {isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="mr-2" />}
                             Salvar Alterações

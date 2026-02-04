@@ -24,6 +24,8 @@ Acompanhamento detalhado do desenvolvimento do ecossistema BeFitness PRO.
 |  (x)  | Otimização para Telas OLED           |  UI/UX   |    Baixa    |     2h     |  100%   | Concluído |
 |  (x)  | Skeletons de Carregamento            |   Perf   |    Baixa    |     2h     |  100%   | Concluído |
 |  (x)  | Exportação de Histórico (CSV)        | Expansão |    Média    |     3h     |  100%   | Concluído |
+|  (x)  | Unificação de Onboarding Visual     |  UI/UX   |    Média    |     2h     |  100%   | Concluído |
+|  (x)  | Registro de Tema Dark (Clerk)        | Fundação |    Baixa    |     1h     |  100%   | Concluído |
 |  ( )  | Rastreamento de Macronutrientes      | Expansão |    Alta     |    10h     |   0%    | Futuro    |
 
 ### Detalhamento da Estrutura (Legenda)
