@@ -109,6 +109,15 @@ export const resetUserData = mutation({
             await ctx.db.delete(weight._id);
         }
 
+        const hydration = await ctx.db
+            .query("hydration")
+            .withIndex("by_userId", (q) => q.eq("userId", args.userId))
+            .collect();
+
+        for (const record of hydration) {
+            await ctx.db.delete(record._id);
+        }
+
         return { success: true };
     },
 });

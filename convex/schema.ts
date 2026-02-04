@@ -14,7 +14,7 @@ export default defineSchema({
     initialWeight: v.number(),
     isWizardCompleted: v.boolean(),
   }).index("by_userId", ["userId"]),
-  
+
   weights: defineTable({
     userId: v.string(),
     weight: v.number(),
@@ -23,6 +23,16 @@ export default defineSchema({
     calories: v.number(), // Estimated daily maintenance calories at this weight
     difference: v.float64(), // Difference from previous weight
     status: v.string(), // "gained", "lost", "maintained"
+  })
+    .index("by_userId", ["userId"])
+    .index("by_date", ["date"])
+    .index("by_userId_date", ["userId", "date"]),
+
+  hydration: defineTable({
+    userId: v.string(),
+    amount: v.number(), // in ml
+    date: v.string(), // ISO date string YYYY-MM-DD
+    timestamp: v.number(),
   })
     .index("by_userId", ["userId"])
     .index("by_date", ["date"])

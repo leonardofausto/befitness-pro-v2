@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as hydration from "../hydration.js";
 import type * as profiles from "../profiles.js";
 import type * as utils from "../utils.js";
 import type * as weights from "../weights.js";
@@ -19,6 +20,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  hydration: typeof hydration;
   profiles: typeof profiles;
   utils: typeof utils;
   weights: typeof weights;
