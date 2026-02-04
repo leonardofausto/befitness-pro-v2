@@ -18,7 +18,8 @@ Acompanhamento detalhado do desenvolvimento do ecossistema BeFitness PRO.
 |  (x)  | Modal de Configurações Global        |  UI/UX   |    Média    |     3h     |  100%   | Concluído |
 |  (x)  | Bio-Feedback Auditivo (Sons)         |  UI/UX   |    Baixa    |     2h     |  100%   | Concluído |
 |  (x)  | Reset de Dados Seguro (Backend)      |  Fundação|    Média    |     2h     |  100%   | Concluído |
-|  ( )  | Visualização de Gráficos (Trends)    | Avançado |    Alta     |     8h     |   0%    | Pendente  |
+|  (x)  | Monitoramento de Hidratação Int.     |   Core   |    Média    |     6h     |  100%   | Concluído |
+|  ( )  | Visualização de Gráficos (Trends)    | Avançado |    Alta     |     8h     |  20%    | Em Progresso |
 |  ( )  | Exportação de Relatórios (PDF/CSV)   | Expansão |    Média    |     5h     |   0%    | Pendente  |
 |  ( )  | Rastreamento de Macronutrientes      | Expansão |    Alta     |    10h     |   0%    | Futuro    |
 

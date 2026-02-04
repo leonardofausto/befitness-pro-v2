@@ -1,5 +1,30 @@
 # Registro de Alterações (Changelog)
 
+## [0.4.0] - 2026-02-04
+### Adicionado
+- **Rastreador de Hidratação**: Sistema completo para monitoramento de ingestão de água.
+  - Cálculo automático de meta (35ml/kg) baseado no peso atual.
+  - Card interativo com barra de progresso e presets de adição rápida (200ml, 250ml, 350ml, 500ml).
+  - Modal de Histórico de Hidratação com filtros por Mês e Ano.
+  - Status dinâmico "Meta Batida! 🎉" ao atingir o objetivo diário.
+- **Calendário Unificado**: O calendário agora exibe conquistas de peso e hidratação simultaneamente.
+  - Indicador de Estrela Amarela para dias com meta de água atingida.
+- **Métricas de Objetivo Expandidas**: Card "Meu Objetivo" agora inclui:
+  - Peso Inicial, Progresso Total (kg) e IMC alvo na meta.
+  - Status de "Meta Atingida! 🏆" com ícone de troféu.
+
+### Alterado
+- **Reorganização do Dashboard**: Layout otimizado para melhor priorização visual:
+  - Linha 1: Gráfico de Evolução + Histórico de Pesagem.
+  - Linha 2: Hidratação + Calendário + Meu Objetivo.
+- **Padronização Visual (Glassmorphism)**: Todos os cards do dashboard agora seguem a mesma estética premium com gradientes vibrantes (Indigo, Púrpura, Azul) e desfoque de fundo.
+- **Nomenclatura**: Card "Calendário de Peso" renomeado para apenas "Calendário" para refletir a natureza multidisciplinar.
+
+### Corrigido
+- Sincronização de exclusão de dados: "Resetar Dados" agora remove também o histórico de hidratação.
+- Ordem de renderização e espaçamento em grids de 3 colunas para dispositivos grandes.
+
+
 ## [0.3.0] - 2026-02-03
 ### Adicionado
 - **Sistema de Configurações**: Novo modal centralizado para gerenciamento total da conta.
