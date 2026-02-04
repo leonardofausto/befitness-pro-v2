@@ -31,6 +31,11 @@ export const metadata: Metadata = {
     images: [{ url: "/logo.png" }],
     type: "website",
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "beFitness PRO",
+  },
 };
 
 export default function RootLayout({
